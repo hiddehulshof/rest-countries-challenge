@@ -24,7 +24,7 @@
             <div @click="toggleMode"><i :class="modeIcon"></i>{{ modeText }}</div>
         </div>
     </section>
-    <section class="main__content" :class="currentMode" v-if="!currentlySelected">
+    <div class="main__content" :class="currentMode" v-if="!currentlySelected">
         <div class="main__filters">
             <div class="search__country">
                 <input id="input" v-model="search" @input="searchCountry()" type="text"
@@ -32,7 +32,7 @@
                 <i class="fas fa-search"></i>
             </div>
             <div class="filter__region">
-                <select v-model="region" @change="searchRegion()">
+                <select v-model="region" @change="searchRegion()" name="region">
                     <option disabled value="">Filter by region</option>
                     <option value="Africa">Africa</option>
                     <option value="Americas">Americas</option>
@@ -65,7 +65,7 @@
                 </div>
             </div>
         </div>
-    </section>
+    </div>
 
     <section class="main__content" :class="currentMode" v-if="currentlySelected">
         <div class="details__row">
