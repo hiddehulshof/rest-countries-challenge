@@ -32,13 +32,13 @@
                 <i class="fas fa-search"></i>
             </div>
             <div class="filter__region">
-                <select v-model="region" @change="searchRegion()" name="region">
-                    <option name="none" disabled value="">Filter by region</option>
-                    <option name="Africa" value="Africa">Africa</option>
-                    <option name="Americas" value="Americas">Americas</option>
-                    <option name="Asia" value="Asia">Asia</option>
-                    <option name="Europe" value="Europe">Europe</option>
-                    <option name="Oceania" value="Oceania">Oceania</option>
+                <select v-model="region" @change="searchRegion()" aria-label="Region">
+                    <option disabled value="">Filter by region</option>
+                    <option value="Africa">Africa</option>
+                    <option value="Americas">Americas</option>
+                    <option value="Asia">Asia</option>
+                    <option value="Europe">Europe</option>
+                    <option value="Oceania">Oceania</option>
                 </select>
             </div>
         </div>
