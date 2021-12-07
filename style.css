@@ -48,6 +48,13 @@ main {
     width: 40%;
 }
 
+@media only screen and (max-width: 768px) {
+    .detailpage__content {
+        width: 100%;
+        padding-bottom: 3rem;
+    }
+}
+
 .header.dark__mode {
     background-color: hsl(209, 23%, 22%);
     color: white;
@@ -199,6 +206,13 @@ main {
     width: 50%;
 }
 
+@media only screen and (max-width: 768px) {
+    .details__flag {
+        width: 100%;
+    }
+}
+
+
 .details__image {
     width: 90%;
 }
@@ -210,6 +224,12 @@ main {
 
 .details__info {
     width: 50%;
+}
+
+@media only screen and (max-width: 768px) {
+    .details__info {
+        width: 100%;
+    }
 }
 
 .border__countries {
@@ -225,6 +245,24 @@ main {
     border: 0;
     box-shadow: 0 0 4px rgba(0, 0, 0, 0.151);
 }
+
+@media only screen and (max-width: 768px) {
+    .border__country {
+        padding: 0.5rem;
+        margin: 0.25rem;
+        border: 0;
+        box-shadow: 0 0 4px rgba(0, 0, 0, 0.151);
+    }
+    .border__countries {
+        flex-wrap: wrap;
+    }
+    .border__countries .details__title {
+        width: 100%;
+        padding-bottom: 1rem;
+    }
+}
+
+
 
 .border__countries .details__title {
     padding-right: 10px;
