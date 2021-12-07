@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- displays site properly based on user's device -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+          integrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0v4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <link rel="icon" type="image/png" sizes="32x32" href="./images/favicon-32x32.png">
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <title>Frontend Mentor | Rest countries api</title>
+</head>
+<body>
+<main id="app">
+    <section class="header" :class="currentMode">
+        <div class="header__text"><h1>Where in the world</h1></div>
+        <div class="header__toggle">
+            <div @click="toggleMode"><i :class="modeIcon"></i>{{ modeText }}</div>
+        </div>
+    </section>
+    <section class="main__content" :class="currentMode" v-if="!currentlySelected">
+        <div class="main__filters">
+            <div class="search__country">
+                <input id="input" v-model="search" @input="searchCountry()" type="text"
+                       placeholder="Search for a country">
+                <i class="fas fa-search"></i>
+            </div>
+            <div class="filter__region">
+                <select v-model="region" @change="searchRegion()">
+                    <option disabled value="">Filter by region</option>
+                    <option value="Africa">Africa</option>
+                    <option value="Americas">Americas</option>
+                    <option value="Asia">Asia</option>
+                    <option value="Europe">Europe</option>
+                    <option value="Oceania">Oceania</option>
+                </select>
+            </div>
+        </div>
+        <div class="countries__row">
+            <div class="card__container" v-for="country in countries" ref="card">
+                <div class="countries__card" @click="selectCountry(country)">
+                    <div class="country__image">
+                        <img :src="country.flags.svg" :alt="country.name.common">
+                    </div>
+                    <div class="country__body">
+                        <div class="county__name">
+                            {{ country.name.common }}
+                        </div>
+                        <div class="county__details">
+                            <span class="details__title">Population:</span> {{ country.population.toLocaleString() }}
+                        </div>
+                        <div class="county__details">
+                            <span class="details__title">Region:</span> {{ country.region }}
+                        </div>
+                        <div class="county__details" v-for="capital in country.capital">
+                            <span class="details__title">Capital:</span> {{ capital }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="main__content" :class="currentMode" v-if="currentlySelected">
+        <div class="details__row">
+            <div class="back__bar">
+                <button @click="removeSelected()"><i class="fas fa-arrow-left"></i> Back</button>
+            </div>
+            <div class="details__flag">
+                <div class="details__image">
+                    <img :src="currentlySelected.flags.svg" :alt="currentlySelected.name.common">
+                </div>
+            </div>
+            <div class="details__info">
+                <div class="detailpage__title">
+                    <h1> {{currentlySelected.name.common}}</h1>
+                </div>
+                <div class="detailpage__content">
+                    <div class="detail__row">
+                        <span class="details__title">Native Name:</span>
+                        <span v-for="(name, key, index) in currentlySelected.name.nativeName">
+                            {{ name.common }}<span
+                                v-if="index != Object.keys(currentlySelected.name.nativeName).length - 1">, </span>
+                        </span>
+                    </div>
+                    <div class="detail__row">
+                        <span class="details__title">Population:</span>
+                        <span>
+                        {{ currentlySelected.population.toLocaleString() }}
+                    </span>
+                    </div>
+                    <div class="detail__row">
+                        <span class="details__title">Region:</span>
+                        <span>
+                        {{ currentlySelected.region }}
+                    </span>
+                    </div>
+                    <div class="detail__row">
+                        <span class="details__title">Sub Region:</span>
+                        <span>
+                        {{ currentlySelected.subregion }}
+                    </span>
+                    </div>
+                    <div class="detail__row">
+                        <span class="details__title">Capital:</span>
+                        <span v-for="(capital, key, index) in currentlySelected.capital">
+                            {{ capital }}<span v-if="key != currentlySelected.capital.length - 1">, </span>
+                        </span>
+                        <div>
+                        </div>
+                    </div>
+                </div>
+                <div class="detailpage__content">
+                    <div class="detail__row">
+                        <span class="details__title">Top Level Domain:</span>
+                        <span v-for="(tld, key, index) in currentlySelected.tld">
+                            {{ tld }}<span v-if="key != currentlySelected.tld.length - 1">, </span>
+                        </span>
+                    </div>
+                    <div class="detail__row">
+                        <span class="details__title">Currencies:</span>
+                        <span v-for="(curr, key, index) in currentlySelected.currencies">
+                            {{ curr.name }}<span
+                                v-if="index != Object.keys(currentlySelected.currencies).length - 1">, </span>
+                        </span>
+                    </div>
+                    <div class="detail__row">
+                        <span class="details__title">Currencies:</span>
+                        <span v-for="(lang, key, index) in currentlySelected.languages">
+                            {{ lang }}<span
+                                v-if="index != Object.keys(currentlySelected.languages).length - 1">, </span>
+                        </span>
+                    </div>
+                </div>
+                <div class="detailpage__title">
+                    <div class="detail__row">
+                        <div class="border__countries">
+                            <div class="details__title">Border countries: </div>
+                            <div class="border__box" v-for="(bord, key, index) in currentlySelected.borders">
+                                <div class="border__country" @click="selectCountry(country(bord))">
+                                    {{ country(bord).name.common }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+<script>
+    const app = new Vue({
+        el: '#app',
+        data() {
+            return {
+                countries: null,
+                search: '',
+                region: '',
+                modeText: 'Dark Mode',
+                currentMode: 'light__mode',
+                modeIcon: 'far fa-moon',
+                currentlySelected: null
+            }
+        },
+        mounted() {
+            axios
+                .get('https://restcountries.com/v3.1/all')
+                .then(response => (this.countries = response.data))
+        },
+        methods: {
+            country(code) {
+                this.countries
+                var result = this.countries.filter(obj => {
+                    return obj.cca3 == code
+                })
+
+                return result[0]
+            },
+            toggleMode() {
+                if (this.currentMode === 'light__mode') {
+                    this.currentMode = 'dark__mode'
+                    this.modeText = 'Light Mode'
+                    this.modeIcon = 'fas fa-moon'
+                } else {
+                    this.currentMode = 'light__mode'
+                    this.modeText = 'Dark Mode'
+                    this.modeIcon = 'far fa-moon'
+                }
+            },
+            searchRegion() {
+                axios
+                    .get('https://restcountries.com/v3.1/region/' + this.region)
+                    .then(response => (this.countries = response.data))
+            },
+            searchCountry() {
+                const cards = this.$refs.card;
+                cards.forEach(card => card.style.display = "block");
+                cards.forEach((card, i) => {
+                    if (!card.innerText.toLowerCase().includes(this.search.toLowerCase())) {
+                        cards[i].style.display = "none";
+                    }
+                })
+            },
+            selectCountry(country) {
+                this.currentlySelected = country
+            },
+            removeSelected() {
+                this.currentlySelected = null
+                setTimeout(() => this.searchCountry(), 1);
+            }
+        }
+    })
+</script>
+</body>
+</html>
