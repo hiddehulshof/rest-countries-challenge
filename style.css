@@ -21,7 +21,7 @@ main {
 }
 
 .header {
-    padding: 2rem;
+    padding: 0.75rem 3rem;
     display: flex;
     justify-content: space-between;
 }
@@ -73,17 +73,19 @@ main {
 
 .main__filters {
     position: relative;
-    padding: 3rem 1rem;
+    padding: 1rem;
     display: flex;
     justify-content: space-between;
+    flex-wrap: wrap;
 }
 
 .main__filters .search__country input {
     box-sizing: border-box;
-    padding-left: 2.6rem;
+    padding-left: 5rem;
+    margin-bottom: 10px;
     border-radius: 5px;
     border: none;
-    height: 2.4rem;
+    height: 3.4rem;
     width: 100%;
 }
 
@@ -99,16 +101,16 @@ main {
 
 .main__filters .search__country i {
     position: absolute;
-    left: 1.5rem;
-    top: 60px;
+    left: 2.5rem;
+    top: 36px;
 }
 
 .main__filters .filter__region select {
     box-sizing: border-box;
     border-radius: 5px;
-    padding-right: 2.6rem;
+    padding: 0 2.6rem;
     border: none;
-    height: 2.4rem;
+    height: 3.4rem;
     width: 100%;
     background-color: white;
 }
